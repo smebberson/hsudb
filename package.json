@@ -1,0 +1,42 @@
+{
+  "name": "hsudb",
+  "version": "0.0.1",
+  "description": "HMAC (stored in the database) URL signing middleware for Express",
+  "main": "index.js",
+  "engines": {
+    "node": ">= 4.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha",
+    "coverage": "./vagrant/scripts/test-coverage",
+    "travis": "./vagrant/scripts/test-travis"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smebberson/hsudb.git"
+  },
+  "keywords": [
+    "HMAC",
+    "signed",
+    "signing",
+    "sign",
+    "url",
+    "middleware",
+    "express",
+    "connect",
+    "database"
+  ],
+  "author": "Scott Mebberson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smebberson/hsudb/issues"
+  },
+  "homepage": "https://github.com/smebberson/hsudb#readme",
+  "devDependencies": {
+    "chai": "3.5.0",
+    "express": "4.13.4",
+    "istanbul": "0.4.2",
+    "mocha": "2.4.5",
+    "supertest": "1.1.0"
+  }
+}
