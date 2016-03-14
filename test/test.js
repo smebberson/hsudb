@@ -137,7 +137,7 @@ describe('HSUDB', function () {
                 urlToSignTwo = '/two?user=6dg3tct749fj&ion=1&espv=2',
                 hsudbProtectOne = hsudb({
                     secret: 'secret',
-                    store: function (id, salt, callback) {
+                    store: function (req, id, salt, callback) {
 
                         expect(id).to.equal(idOne);
                         expect(id).to.not.equal(idTwo);
@@ -148,7 +148,7 @@ describe('HSUDB', function () {
                 }),
                 hsudbProtectTwo = hsudb({
                     secret: 'secret',
-                    store: function (id, salt, callback) {
+                    store: function (req, id, salt, callback) {
 
                         expect(id).to.equal(idTwo);
                         expect(id).to.not.equal(idOne);
@@ -223,7 +223,7 @@ describe('HSUDB', function () {
                             hsudbProtect;
 
                         // define the store function
-                        store = function (_id, salt, callback) {
+                        store = function (req, _id, salt, callback) {
                             return done();
                         };
 
@@ -259,7 +259,7 @@ describe('HSUDB', function () {
                                 hsudbProtect;
 
                             // define the store function
-                            store = function (_id, salt, callback) {
+                            store = function (req, _id, salt, callback) {
                                 return callback();
                             };
 
@@ -299,7 +299,7 @@ describe('HSUDB', function () {
                                 hsudbProtect;
 
                             // define the store function
-                            store = function (_id, salt, callback) {
+                            store = function (req, _id, salt, callback) {
                                 return callback(new Error('Failed to store the salt.'));
                             };
 
@@ -347,7 +347,7 @@ describe('HSUDB', function () {
                                 hsudbProtect;
 
                             // define the store function
-                            store = function (_id, salt, callback) {
+                            store = function (req, _id, salt, callback) {
                                 return callback();
                             };
 
@@ -381,7 +381,7 @@ describe('HSUDB', function () {
                                 hsudbProtect;
 
                             // define the store function
-                            store = function (_id, salt, callback) {
+                            store = function (req, _id, salt, callback) {
                                 return callback(new Error('Failed to store the salt.'));
                             };
 
@@ -437,13 +437,13 @@ describe('HSUDB', function () {
                         hsudbProtect;
 
                     // define the store function
-                    store = function (_id, salt, callback) {
+                    store = function (req, _id, salt, callback) {
                         db[_id] = salt;
                         return callback();
                     };
 
                     // define the retrieve function
-                    retrieve = function (_id, callback) {
+                    retrieve = function (req, _id, callback) {
                         return callback(null, db[_id]);
                     };
 
@@ -508,11 +508,11 @@ describe('HSUDB', function () {
                             hsudbProtect;
 
                         // define the store function
-                        store = function (_id, salt, callback) {
+                        store = function (req, _id, salt, callback) {
                             return callback();
                         };
 
-                        retrieve = function (_id, callback) {
+                        retrieve = function (req, _id, callback) {
                             return done()
                         };
 
@@ -565,11 +565,11 @@ describe('HSUDB', function () {
                             hsudbProtect;
 
                         // define the store function
-                        store = function (_id, salt, callback) {
+                        store = function (req, _id, salt, callback) {
                             return callback();
                         };
 
-                        retrieve = function (_id, callback) {
+                        retrieve = function (req, _id, callback) {
                             return callback(new Error('Failed to retrieve the salt.'));
                         };
 
@@ -641,16 +641,16 @@ describe('HSUDB', function () {
                         hsudbProtect;
 
                         // define the store function
-                        store = function (_id, salt, callback) {
+                        store = function (req, _id, salt, callback) {
                             db[_id] = salt;
                             return callback();
                         };
 
-                        retrieve = function (_id, callback) {
+                        retrieve = function (req, _id, callback) {
                             return callback(null, db[_id]);
                         };
 
-                        complete = function (_id, callback) {
+                        complete = function (req, _id, callback) {
                             return done();
                         };
 
@@ -725,13 +725,13 @@ describe('HSUDB', function () {
                         hsudbProtect;
 
                     // define the store function
-                    store = function (_id, salt, callback) {
+                    store = function (req, _id, salt, callback) {
                         db[_id] = salt;
                         return callback();
                     };
 
                     // define the retrieve function
-                    retrieve = function (_id, callback) {
+                    retrieve = function (req, _id, callback) {
                         return callback(null, db[_id]);
                     };
 
@@ -785,13 +785,13 @@ describe('HSUDB', function () {
                         hsudbProtect;
 
                     // define the store function
-                    store = function (_id, salt, callback) {
+                    store = function (req, _id, salt, callback) {
                         db[_id] = salt;
                         return callback();
                     };
 
                     // define the retrieve function
-                    retrieve = function (_id, callback) {
+                    retrieve = function (req, _id, callback) {
                         return callback(null, db[_id]);
                     };
 
@@ -857,18 +857,18 @@ describe('HSUDB', function () {
                         hsudbProtect;
 
                     // define the store function
-                    store = function (_id, salt, callback) {
+                    store = function (req, _id, salt, callback) {
                         db[_id] = salt;
                         return callback();
                     };
 
                     // define the retrieve function
-                    retrieve = function (_id, callback) {
+                    retrieve = function (req, _id, callback) {
                         return callback(null, db[_id]);
                     };
 
                     // define the complete function
-                    complete = function (_id) {
+                    complete = function (req, _id) {
                         delete db[_id];
                     };
 
@@ -958,18 +958,18 @@ describe('HSUDB', function () {
                         hsudbProtect;
 
                     // define the store function
-                    store = function (_id, salt, callback) {
+                    store = function (req, _id, salt, callback) {
                         db[_id] = salt;
                         return callback();
                     };
 
                     // define the retrieve function
-                    retrieve = function (_id, callback) {
+                    retrieve = function (req, _id, callback) {
                         return callback(null, db[_id]);
                     };
 
                     // define the complete function
-                    complete = function (_id) {
+                    complete = function (req, _id) {
                         delete db[_id];
                     };
 

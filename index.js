@@ -159,7 +159,7 @@ module.exports = function hsudb (options) {
                         // create the salt and hand off to the hook to store it
                         var salt = rndm();
 
-                        options.store(id, salt, function (err) {
+                        options.store(req, id, salt, function (err) {
 
                             if (err) {
                                 return reject(err);
@@ -196,7 +196,7 @@ module.exports = function hsudb (options) {
             verify: function hsudbVerifyMiddleware (req, res, next) {
 
                 // retrieve the salt from the hook
-                options.retrieve(id, function (err, salt) {
+                options.retrieve(req, id, function (err, salt) {
 
                     if (err) {
                         return next(err);
@@ -206,15 +206,15 @@ module.exports = function hsudb (options) {
                     var verified = verifyUrl(req.originalUrl, salt, options.secret);
 
                     if (verified === 'invalid') {
-                        throw createError(403, 'invalid HMAC digest', {
+                        return next(createError(403, 'invalid HMAC digest', {
                             code: 'EBADHMACDIGEST'
-                        });
+                        }));
                     }
 
                     if (verified === 'timedout') {
-                        throw createError(403, 'URL has timed out', {
+                        return next(createError(403, 'URL has timed out', {
                             code: 'ETIMEOUTHMACDIGEST'
-                        });
+                        }));
                     }
 
                     return next();
@@ -226,7 +226,7 @@ module.exports = function hsudb (options) {
             complete: function hsudbCompleteMiddleware (req, res, next) {
 
                 req.hsudbComplete = function () {
-                    options.complete(id);
+                    options.complete(req, id);
                 }
 
                 return next();
