@@ -3,7 +3,7 @@
 
 All notable changes to HSUDB will be documented here. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.0.0] - 2016-03.14
+## [1.0.0] - 2016-03-14
 
 - First complete version.
 

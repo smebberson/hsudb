@@ -14,7 +14,7 @@ There are three stages to HSUDB:
 
 - The setup stage in which a signed URL is created (i.e. a secure login link).
 - The verify stage in which a URL is protected unless the signed URL is verified (i.e. a secure login link will error if tampered with).
-- The complete stage in which the URL has been consumed and is finalised such that it can't be used again (i.e. a secure login link should only work once).
+- The complete stage in which the URL has been consumed and is finalized such that it can't be used again (i.e. a secure login link should only work once).
 
 HSUDB also aims to meet the following goals:
 
@@ -279,6 +279,10 @@ app.get('/acount/:id/sign-in', hsudbProtect('account-sign-in').verify, hsudbProt
 ## Change log
 
 [Review the change log for all changes.](CHANGELOG.md)
+
+## Contributing
+
+Contributors are welcomed. HSUDB comes complete with an isolated development environment. You can [read more about contributing to HSUDB here](CONTRIBUTING.md).
 
 ## License
 
