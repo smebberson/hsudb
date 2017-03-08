@@ -1,6 +1,6 @@
 {
   "name": "hsudb",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "HMAC (stored in the database) URL signing middleware for Express",
   "main": "index.js",
   "engines": {

@@ -3,6 +3,10 @@
 
 All notable changes to HSUDB will be documented here. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.0] - 2017-03-08
+
+- Added flexibility so that URLs other than `req.originalUrl` can be verified.
+
 ## [1.0.0] - 2016-03-14
 
 - First complete version.
