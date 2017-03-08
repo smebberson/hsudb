@@ -6,3 +6,10 @@ script:
     - "npm run travis"
 after_script:
     - "test -e ./coverage/lcov.info && npm install coveralls@2 && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+deploy:
+  provider: npm
+  email: "scott@scottmebberson.com"
+  api_key:
+    secure: VlEaleYO2Rkuxa7THBvM31u91AUYo5uw5u+SgypUNbBHLACjvnoSPmw5fCEgG0emImEaq6IzlhLHU0lP1I6yul0NgVseyCe//SS7qauX7jLWTDpmYJNLHdQ2U/lfboGumSvKn5hOkp5+tXksG0FKisRqdyaRj8DyOQ2GJzTo/8BLhstkwaJYZhB369OxedLdawzMdUNiTKnqpoEUUARWsA1+E5PLEvQVhNjYBkzcsEg5oXaf5uHUYh3GvbFzfOAu5oNOfA++RzKeGNYI4XR6Qh5o/w1TeDR9O8LMl2IY0FIeOQkp2Dm3Bf2KnctjBxP1E/GZoPAVQFermyRhOF4X4LjY5OP2PXe5uCKWr1EuB3WGlur9L1aYt+0LkUCx9RfuvAl5GFAQ3BUETTmNxmIhG/HLoYyPrmqKUA6XaPqMAYz8xqU08JiN3MO6fIXI8bSvJf6qfBid7BPoJIIxYfKks/QLDH3OEucdEY1r3iytmN6lL2bG6/f0fdO25IFo+uWc1zBm8Qw154UZV6uHVtOFxUPg4EfIrzGLMk8Vit6a3Iib4CmrBFCs/CgKPTp2/ic7Df2k/3CTVNoNOgV7PSHrwvE+duZxXHVsNtzvf7anmJyUqHg+OLA7wIdN2PXtlUAm/26MX0sht0hKh6G4Lily/zutyNPH1WzUWGBTsANXKZI=
+  on:
+    tags: true
