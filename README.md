@@ -79,6 +79,19 @@ The `hsudb` `options` object can also contain any of the following optional keys
 
 The number of seconds the URL should be valid for. Defaults to 1 hour (i.e. 3600 seconds).
 
+###### urlToVerify
+
+A `function` which will be called with the arguments `req`, `id`. The `urlToVerify` function should return the url which should be verified. There is no `callback`.
+
+The provides a means to pass the verification url through another means, other than requesting it directly. For example, a secured API which passed the verification url as a body parameter.
+
+This defaults to:
+```
+function urlToVerify (req, id) {
+    return req.originalUrl;
+}
+```
+
 ### hsudbProtect(id)
 
 _**Please note:** `hsudbProtect` is not part of the actual API, it is just the name of the variable holding the function produced by calling hsudb(options)._

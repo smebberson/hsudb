@@ -74,6 +74,17 @@ function urlFormat (url) {
 }
 
 /**
+ * Given request, it returns the URL that should be verified.
+ * @param  {Object} req The request object.
+ * @return {String}     The URL to verify against.
+ */
+function urlToVerify (req, id) {
+
+    return req.originalUrl;
+
+}
+
+/**
  * Verifies the URL being actioned by Express.
  *
  * @param  {String} path    The path of the URL
@@ -136,8 +147,12 @@ module.exports = function hsudb (options) {
         throw Error('You must provide a complete function for HSUDB to request a salt be removed.');
     }
 
+
     // get ttl options (default to 1 hour)
     var ttl = parseInt(options.ttl) || 60*60;
+
+    // default the urlToVerify option
+    var urlToVerifyFn = options.urlToVerify || urlToVerify;
 
     // return a function that will scope everything to an id (so we can use this middleware multiple times)
     return function (id) {
@@ -203,7 +218,7 @@ module.exports = function hsudb (options) {
                     }
 
                     // a salt should always exist, try and verify the request
-                    var verified = verifyUrl(req.originalUrl, salt, options.secret);
+                    var verified = verifyUrl(urlToVerifyFn(req, id), salt, options.secret);
 
                     if (verified === 'invalid') {
                         return next(createError(403, 'invalid HMAC digest', {

@@ -494,6 +494,79 @@ describe('HSUDB', function () {
 
                 });
 
+                it('will use a custom urlToVerify method if provided', function (done) {
+
+                    var id = rndm(),
+                        app = createApp(),
+                        agent = createAgent(app),
+                        urlToSign = '/verify?user=6dg3tct749fj&ion=1&espv=2',
+                        db = {},
+                        signedUrl,
+                        store,
+                        retrieve,
+                        hsudbProtect,
+                        urlToVerify,
+                        called = false;
+
+                    // define the store function
+                    store = function (req, _id, salt, callback) {
+                        db[_id] = salt;
+                        return callback();
+                    };
+
+                    retrieve = function (req, _id, callback) {
+                        return callback(null, db[_id]);
+                    };
+
+                    // A custom method to determine the URL to verify.
+                    urlToVerify = function (req, _id) {
+                        called = true;
+                        return req.body.signedUrl;
+                    };
+
+                    // create an instance of hsudb
+                    hsudbProtect = hsudb({
+                        secret: 'secret',
+                        store: store,
+                        retrieve: retrieve,
+                        complete: function () {},
+                        urlToVerify: urlToVerify
+                    })
+
+                    app.use(require('body-parser').json());
+
+                    app.get('/', hsudbProtect(id).setup, function (req, res, next) {
+
+                        req.signUrl(urlToSign).then(function (_signedUrl) {
+                            signedUrl = _signedUrl;
+                            return res.status(200).end();
+                        }, done);
+
+                    });
+
+                    app.post('/verify-proxy', hsudbProtect(id).verify, function (req, res, next) {
+                        res.status(200).send('entered');
+                        expect(called).to.be.true;
+                        return done();
+                    });
+
+                    agent
+                    .get('/')
+                    .expect(200, function (err, res) {
+
+                        if (err) {
+                            return done(err);
+                        }
+
+                        agent
+                        .post('/verify-proxy')
+                        .send({ 'signedUrl': signedUrl })
+                        .end();
+
+                    });
+
+                });
+
                 describe('executes the retrieve hook', function () {
 
                     it('to retrieve a salt', function (done) {
