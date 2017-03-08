@@ -23,7 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # VM configuration for virtualbox
   config.vm.provider "virtualbox" do |vb|
       vb.memory = vm_ext_conf["memory"]
-      vb.cpu = vm_ext_conf["cpus"]
+      vb.cpus = vm_ext_conf["cpus"]
   end
 
   # define the hostname

@@ -21,8 +21,11 @@ Follow these steps to get started with hacking on HSUDB.
 1. Star and fork this repository on GitHub.
 1. Clone your forked repository `git clone https://github.com/smebberson/hsudb.git ./hsudb`.
 1. Start the virtual machine with `vagrant up` (this might take 10 minutes or so).
+1. Once the virtual machine is created, gain command line access with `vagrant ssh`.
+1. Get into the `/vagrant` with `cd /vagrant`.
+1. Install the Node.js modules with `npm install`.
 
-With that, you'll have a virtual machine up and running.
+With that, you'll have a virtual machine up and running with all dependencies.
 
 ## Development
 
