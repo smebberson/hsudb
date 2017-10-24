@@ -98,13 +98,20 @@ function verifyUrl (path, salt, secret) {
     // recreate a digest from the URL path, minus the signature
     var parsedUrl = url.parse(path, true),
         parsedSignature = parsedUrl.query.signature,
-        digest;
+        digest,
+        parsedUrlPath;
 
     // remove the signature as that isn't part of the signed string
     delete parsedUrl.query.signature;
 
+    parsedUrlPath = urlPath(parsedUrl);
+
+    debug({ parsedUrlPath: parsedUrlPath, salt: salt }, 'Verifying url');
+
     // recreate the digest
-    digest = createDigest(salt, secret, urlPath(parsedUrl));
+    digest = createDigest(salt, secret, parsedUrlPath);
+
+    debug({ digest: digest, parsedSignature: parsedSignature }, 'Comparing signatures');
 
     // if we don't have the same value, we're unverified
     if (!scmp(digest, parsedSignature)) {

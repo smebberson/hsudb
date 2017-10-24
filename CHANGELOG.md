@@ -3,6 +3,10 @@
 
 All notable changes to HSUDB will be documented here. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased - 2017-10-24
+
+- Added a little more debugging.
+
 ## [1.1.1-beta.1] - 2017-10-24
 
 - Added debug output via the debug module.
