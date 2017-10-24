@@ -5,7 +5,8 @@ var url = require('url'),
     Promise = require('bluebird'),
     rndm = require('rndm'),
     scmp = require('scmp'),
-    createError = require('http-errors');
+    createError = require('http-errors'),
+    debug = require('debug')('hsudb');
 
 /**
 * Return a timestamp, optionally passing in extra seconds to add to the timestamp.
@@ -168,6 +169,8 @@ module.exports = function hsudb (options) {
                 // lazy-load our signUrl function
                 req.signUrl = function signUrl (urlToSign, callback) {
 
+                    debug({ urlToSign: urlToSign }, 'Signing url');
+
                     // return a promise, but use the callback if one was provided
                     return new Promise(function (resolve, reject) {
 
@@ -177,26 +180,41 @@ module.exports = function hsudb (options) {
                         options.store(req, id, salt, function (err) {
 
                             if (err) {
+
+                                debug({ err: err }, 'Failed to store salt');
+
                                 return reject(err);
                             }
+
+                            debug({ salt: salt, id: id }, 'Stored salt');
 
                             // with the salt stored, let's continue
                             var parsedUrl = url.parse(urlToSign, true),
                                 expires = now(ttl),
+                                parsedUrlWithExpires,
+                                signedUrl,
                                 digest;
 
                             // update the parsedUrl with the expries value before it is signed
                             // this protects us from tampering with the value
                             parsedUrl.query.expires = expires;
 
+                            parsedUrlWithExpires = urlPath(parsedUrl);
+
                             // create the digest
-                            digest = createDigest(salt, options.secret, urlPath(parsedUrl));
+                            digest = createDigest(salt, options.secret, parsedUrlWithExpires);
+
+                            debug({ salt: salt, url: parsedUrlWithExpires }, 'Created digest');
 
                             // now update the url with the information
                             parsedUrl.query.signature = digest;
 
+                            signedUrl = urlFormat(parsedUrl);
+
+                            debug({ url: signedUrl }, 'Signed url');
+
                             // return the updated and signed URL
-                            return resolve(urlFormat(parsedUrl));
+                            return resolve(signedUrl);
 
                         });
 
@@ -217,20 +235,33 @@ module.exports = function hsudb (options) {
                         return next(err);
                     }
 
+                    var signedUrl = urlToVerifyFn(req, id);
+
+                    debug({ salt: salt }, 'Retrieved salt');
+                    debug({ salt: salt, id: id, signedUrl: signedUrl }, 'Attempting to verify');
+
                     // a salt should always exist, try and verify the request
-                    var verified = verifyUrl(urlToVerifyFn(req, id), salt, options.secret);
+                    var verified = verifyUrl(signedUrl, salt, options.secret);
 
                     if (verified === 'invalid') {
+
+                        debug({ verified: verified, salt: salt, id: id }, 'Verify failed');
+
                         return next(createError(403, 'invalid HMAC digest', {
                             code: 'EBADHMACDIGEST'
                         }));
                     }
 
                     if (verified === 'timedout') {
+
+                        debug({ verified: verified, salt: salt, id: id }, 'Verify timedout');
+
                         return next(createError(403, 'URL has timed out', {
                             code: 'ETIMEOUTHMACDIGEST'
                         }));
                     }
+
+                    debug({ verified: verified, salt: salt, id: id }, 'Verify successfull');
 
                     return next();
 

@@ -289,6 +289,10 @@ app.get('/acount/:id/sign-in', hsudbProtect('account-sign-in').verify, hsudbProt
 
 ```
 
+## Debugging
+
+hsudb uses the [debug module](https://www.npmjs.com/package/debug) to make integrating hsudb easier. Simply add `DEBUG=hsudb` to your environment and you'll see debug messages in your console.
+
 ## Change log
 
 [Review the change log for all changes.](CHANGELOG.md)

@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "bluebird": "3.3.4",
+    "debug": "3.1.0",
     "http-errors": "^1.4.0",
     "rndm": "1.2.0",
     "scmp": "1.0.0"
